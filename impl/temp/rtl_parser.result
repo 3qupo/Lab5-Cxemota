@@ -1,0 +1,18 @@
+[
+ {
+  "InstFile" : "C:/iverilog/runner/src/runner.v",
+  "InstLine" : 6,
+  "InstName" : "runner",
+  "ModuleFile" : "C:/iverilog/runner/src/runner.v",
+  "ModuleLine" : 6,
+  "ModuleName" : "runner"
+ },
+ {
+  "InstFile" : "C:/iverilog/runner/src/runner_lab.v",
+  "InstLine" : 2,
+  "InstName" : "runner_lab",
+  "ModuleFile" : "C:/iverilog/runner/src/runner_lab.v",
+  "ModuleLine" : 2,
+  "ModuleName" : "runner_lab"
+ }
+]
