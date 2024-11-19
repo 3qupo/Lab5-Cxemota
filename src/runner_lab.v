@@ -28,4 +28,42 @@ initial
         state <= 0;
     end
 
+always @(state)
+    begin
+        case(state)
+            reset:
+                begin
+                    mosi_d <= -1;
+                    count <= 0;
+                end
+            idle:
+                begin 
+                    count <= 0;
+                end
+            load:
+                begin   
+                    mosi_d <= -1;
+                    count <= reg_width;
+                end
+            transact1:
+                begin  
+                    mosi_d <= {mosi_d[reg_width - 2:0], mosi};
+                    count <= count - 1;
+                end
+            transact2:
+                begin
+                    mosi_d <= {mosi_d[reg_width - 2:0], mosi};
+                    count <= count - 1;
+                end
+            unload:
+                begin     
+                    count <= 0;
+                end
+            default:
+                begin       
+                    count <= 0;
+                end
+        endcase
+    end
+
 endmodule
