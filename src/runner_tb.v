@@ -1,89 +1,79 @@
-`timescale 1ns/1ps
+`timescale 1ns / 1ps
 
 module runner_tb;
-    // Сигналы для тестирования
-    reg clk;
-    reg rst_n;
-    reg btn_inc;
-    reg btn_dec;
-    wire sclk;
-    wire mosi;
-    wire miso;
-    wire ss_n;
-    wire [5:0] master_leds;
-    wire [5:0] slave_leds;
+    // Параметры
+    parameter CLK_PERIOD = 10; // Период тактового сигнала 10 нс
 
-    // Создание экземпляров ведущего и ведомого модулей
+    // Входы и выходы
+    reg rstn;               // Сброс
+    reg sys_clk;            // Системная тактовая частота
+    reg t_start;            // Старт передачи (для Master)
+    reg up;                 // Управляющий сигнал
+    reg [7:0] mosi_d;       // Данные для передачи
+    wire miso;              // Данные от Slave к Master
+    wire mosi;              // Данные от Master к Slave
+    wire sclk;              // Синхросигнал
+    wire cs;                // Выбор Slave
+    wire [5:0] master_led;  // Индикатор Master
+    wire [5:0] slave_led;   // Индикатор Slave
+
+    // Подключение модулей
     runner master (
-        .clk(clk),
-        .rst_n(rst_n),
-        .btn_inc(btn_inc),
-        .btn_dec(btn_dec),
-        .leds(master_leds),
-        .sclk(sclk),
-        .mosi(mosi),
+        .rstn(rstn),
+        .sys_clk(sys_clk),
+        .t_start(t_start),
+        .up(up),
         .miso(miso),
-        .ss_n(ss_n)
+        .cs(cs),
+        .mosi(mosi),
+        .sclk(sclk),
+        .led(master_led)
     );
 
     runner_lab slave (
-        .clk(clk),
-        .rst_n(rst_n),
-        .sclk(sclk),
+        .rstn(rstn),
+        .sys_clk(sys_clk),
+        .cs(cs),
         .mosi(mosi),
-        .miso(miso),
-        .ss_n(ss_n),
-        .leds(slave_leds)
+        .sclk(sclk),
+        .led(slave_led)
     );
 
-    // Генерация тактового сигнала
+    // Генерация системного тактового сигнала
+    always #(CLK_PERIOD / 2) sys_clk = ~sys_clk;
+
+    // Тестовая последовательность
     initial begin
-        clk = 0;
-        forever #10 clk = ~clk;
-    end
+        // Инициализация сигналов
+        sys_clk = 1;           // Инициализация тактового сигнала
+        rstn = 1;              // Снятие сброса
+        t_start = 0;           // Передача не началась
+        up = 0;                // Управляющий сигнал выключен
+        mosi_d = 8'b00101010;  // Инициализация данных для отправки
 
-    // Тестовые воздействия
-    initial begin
-        // Инициализация
-        rst_n = 0;
-        btn_inc = 0;
-        btn_dec = 0;
-        #20;
-        
-        // Снятие сброса
-        rst_n = 1;
-        #20;
+        // Начало передачи
+        #10;
+        t_start = 1;          // Запуск передачи
+        up = 1;               // Устанавливаем управляющий сигнал
+        #CLK_PERIOD;
 
-        // Тест увеличения количества светодиодов
-        repeat (3) begin
-            btn_inc = 1;
-            #20;
-            btn_inc = 0;
-            #100;  // Ожидание завершения передачи
-        end
+        t_start = 0;          // Окончание передачи
+        up = 0;
 
-        // Тест уменьшения количества светодиодов
-        repeat (2) begin
-            btn_dec = 1;
-            #20;
-            btn_dec = 0;
-            #100;  // Ожидание завершения передачи
-        end
-
-        // Завершение симуляции
+        // Завершение моделирования
         #100;
-        $finish;
+        $stop;
     end
 
-    // Мониторинг изменений
+    // Мониторинг данных
     initial begin
-        $monitor("Время=%0t rst_n=%b btn_inc=%b btn_dec=%b master_leds=%b slave_leds=%b",
-                 $time, rst_n, btn_inc, btn_dec, master_leds, slave_leds);
+        $monitor("Time: %0dns | Master LED: %b | Slave LED: %b | MOSI: %b | MISO: %b | SCLK: %b | CS: %b", 
+                  $time, master_led, slave_led, mosi, miso, sclk, cs);
     end
 
     initial begin
         $dumpfile("./runner_out.vcd"); // Файл для сохранения результатов
-        $dumpvars(0, runner_tb); // Сохраняем переменные для анализа
+        $dumpvars(0, runner_tb);       // Сохраняем переменные для анализа
     end
 
 endmodule

@@ -9,10 +9,10 @@
  },
  {
   "InstFile" : "C:/iverilog/runner/src/runner_lab.v",
-  "InstLine" : 2,
+  "InstLine" : 1,
   "InstName" : "runner_lab",
   "ModuleFile" : "C:/iverilog/runner/src/runner_lab.v",
-  "ModuleLine" : 2,
+  "ModuleLine" : 1,
   "ModuleName" : "runner_lab"
  }
 ]
