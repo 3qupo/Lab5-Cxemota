@@ -37,4 +37,67 @@ initial
         state <= 0;
     end
 
+always @(state)
+    begin       
+        case (state)
+            reset:
+                begin   
+                    miso_d <= 0;
+                    mosi_d <= 0;
+                    count <= 0;
+                    tmpcs <= 1;
+                end
+            idle:
+                begin   
+                    miso_d <= 0;
+                    mosi_d <= 0;
+                    count <= 0;
+                    tmpcs <= 1;
+                end
+            load:
+                begin   
+                    miso_d <= 0;
+                    mosi_d <= led;
+                    count <= reg_width;
+                    tmpcs <= 0;
+                end
+            transact1:
+                begin       
+                    tmpcs <= 0;
+                    miso_d <= {miso_d[reg_width - 2:0], miso};
+                    mosi_d <= {mosi_d[reg_width - 2:0], 1'b0};
+                    count <= count - 1;
+                end
+            transact2:
+                begin   
+                    tmpcs <= 0;
+                    miso_d <= {miso_d[reg_width - 2:0], miso};
+                    mosi_d <= {mosi_d[reg_width - 2:0], 1'b0};
+                    count <= count - 1;
+                end
+        endcase
+    end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 endmodule
