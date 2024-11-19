@@ -82,6 +82,25 @@ assign cs = tmpcs;
 assign mosi = (~cs) ? mosi_d[reg_width - 1] : 1'bz;
 assign sclk = (state == transact1 || state == transact2) ? sys_clk : 1'b0;
 
+always @(posedge sys_clk)
+begin   
+    if (!rstn)
+        begin       
+            led_counter <= 0;
+        end
+    else    
+        begin   
+            if(!up)
+                begin   
+                    led_counter <= led_counter + 1;
+                    if(led_counter == 5)
+                        begin
+                            led_counter <= 0;
+                        end
+                end
+        end
+end
+
 genvar i;
 generate
     for (i = 0; i < 6; i = i + 1)
@@ -89,21 +108,6 @@ generate
             assign led[i] = (rstn ? led_counter != i : 0);
         end
 endgenerate
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 endmodule
