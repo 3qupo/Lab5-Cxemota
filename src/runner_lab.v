@@ -89,4 +89,13 @@ always @(sys_clk)
 
 assign sclk = (state == transact1 || state == transact2) ? sys_clk : 1'b0;
 
+genvar i;
+generate
+    for (i = 0; i < 6; i = i + 1)
+        begin       
+            assign led[i] = (rstn ? mosi_d[7 - i] : 1);
+        end
+endgenerate
+
+
 endmodule
