@@ -78,7 +78,9 @@ always @(state)
         endcase
     end
 
-
+assign cs = tmpcs;
+assign mosi = (~cs) ? mosi_d[reg_width - 1] : 1'bz;
+assign sclk = (state == transact1 || state == transact2) ? sys_clk : 1'b0;
 
 
 
