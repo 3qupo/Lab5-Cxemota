@@ -66,4 +66,27 @@ always @(state)
         endcase
     end
 
+always @(sys_clk)
+    begin   
+        if (!cs)
+            begin
+                if (count == 0)
+                    begin       
+                        state = load;
+                        state = transact1;
+                    end
+                else    
+                    case(state)
+                        transact1:
+                            state = transact1;
+                        transact2:
+                            state = transact2;
+                    endcase
+            end
+        else
+            state = idle;
+    end
+
+assign sclk = (state == transact1 || state == transact2) ? sys_clk : 1'b0;
+
 endmodule
