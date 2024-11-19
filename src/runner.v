@@ -8,7 +8,7 @@ module runner (
     input rstn,
     input sys_clk,
     input t_star,
-    input up.
+    input up,
     output mosi,
     output miso,
     output sclk
@@ -28,3 +28,13 @@ reg [reg_width - 1:0] miso_d;
 reg [counter_width:0] count;
 reg [3:0] state;
 reg [2:0] led_counter;
+
+initial 
+    begin
+        led_counter <= 0;
+        mosi_d <= 0;
+        miso_d <= 0;
+        state <= 0;
+    end
+
+endmodule

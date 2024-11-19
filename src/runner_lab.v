@@ -4,7 +4,7 @@ module runner_lab (
     input sys_clk,
     input cs,
     input mosi,
-    input sclk,
+    input sclk
 );
 
 parameter reg_width = 8;
@@ -20,3 +20,12 @@ reg [reg_width - 1:0] mosi_d;
 reg [counter_width:0] count;
 reg [3:0] state;
 reg [2:0] led_counter;
+
+initial 
+    begin 
+        led_counter <= 0;
+        mosi_d <= -1;
+        state <= 0;
+    end
+
+endmodule
