@@ -1,79 +1,88 @@
 `timescale 1ns / 1ps
 
 module runner_tb;
-    // Параметры
-    parameter CLK_PERIOD = 10; // Период тактового сигнала 10 нс
-
-    // Входы и выходы
-    reg rstn;               // Сброс
-    reg sys_clk;            // Системная тактовая частота
-    reg t_start;            // Старт передачи (для Master)
-    reg up;                 // Управляющий сигнал
-    reg [7:0] mosi_d;       // Данные для передачи
-    wire miso;              // Данные от Slave к Master
-    wire mosi;              // Данные от Master к Slave
-    wire sclk;              // Синхросигнал
-    wire cs;                // Выбор Slave
-    wire [5:0] master_led;  // Индикатор Master
-    wire [5:0] slave_led;   // Индикатор Slave
+    // Регистры и провода для тестбенча
+    reg sys_clk = 0;
+    reg rstn = 0;
+    reg t_start = 1;
+    reg up = 1;
+    reg cs = 1;
+    reg [7:0] _mosi;  // Данные для передачи
+    wire sclk;
+    wire miso;
+    wire mosi;  // Определяем как wire
+    reg mosi_driver;  // Регистратор для управления mosi в тестбенче
 
     // Подключение модулей
     runner master (
+        .led(),
         .rstn(rstn),
         .sys_clk(sys_clk),
-        .t_start(t_start),
+        .t_star(t_start),
         .up(up),
+        .mosi(mosi),  // Подключаем как wire
         .miso(miso),
-        .cs(cs),
-        .mosi(mosi),
-        .sclk(sclk),
-        .led(master_led)
+        .sclk(sclk)
     );
 
     runner_lab slave (
+        .led(),
         .rstn(rstn),
         .sys_clk(sys_clk),
         .cs(cs),
         .mosi(mosi),
-        .sclk(sclk),
-        .led(slave_led)
+        .sclk(sclk)
     );
 
+    // Управляем mosi через непрерывное назначение
+    assign mosi = mosi_driver;
+
     // Генерация системного тактового сигнала
-    always #(CLK_PERIOD / 2) sys_clk = ~sys_clk;
+    always #5 sys_clk = ~sys_clk;
 
-    // Тестовая последовательность
+    // Начало
+    // Блок инициализации сигналов и начальных условий
     initial begin
-        // Инициализация сигналов
-        sys_clk = 1;           // Инициализация тактового сигнала
-        rstn = 1;              // Снятие сброса
-        t_start = 0;           // Передача не началась
-        up = 0;                // Управляющий сигнал выключен
-        mosi_d = 8'b00101010;  // Инициализация данных для отправки
+        rstn = 0;  // Активный сброс
+        t_start = 1;
+        up = 1;
+        cs = 1;
+        mosi_driver = 0;
 
-        // Начало передачи
+        // Этап 1: Сброс системы
         #10;
-        t_start = 1;          // Запуск передачи
-        up = 1;               // Устанавливаем управляющий сигнал
-        #CLK_PERIOD;
+        rstn = 1;  // Выход из сброса
+        #20;
 
-        t_start = 0;          // Окончание передачи
-        up = 0;
+        // Этап 2: Передача данных с мастера на ведомый
+        t_start = 0;  // Начало передачи
+        _mosi = 8'b11001010;  // Данные для передачи
 
-        // Завершение моделирования
-        #100;
-        $stop;
+        // Передача данных бит за битом
+        repeat (8) begin
+            #5 mosi_driver = _mosi[0];
+            _mosi = _mosi >> 1;  // Сдвиг на 1 бит вправо
+            #5;
+        end
+
+        // Этап 3: Завершение передачи
+        t_start = 1;
+        cs = 1;
+        #10;
+
+        // Этап 4: Тест работы кнопки `up`
+        up = 0;  // Имитируем нажатие
+        #10;
+        up = 1;
+        #50;
     end
+    // Конец
 
-    // Мониторинг данных
+    // Конец - обязательная часть
     initial begin
-        $monitor("Time: %0dns | Master LED: %b | Slave LED: %b | MOSI: %b | MISO: %b | SCLK: %b | CS: %b", 
-                  $time, master_led, slave_led, mosi, miso, sclk, cs);
-    end
-
-    initial begin
-        $dumpfile("./runner_out.vcd"); // Файл для сохранения результатов
+        $dumpfile("./runner_out.vcd");  // Файл для сохранения результатов
         $dumpvars(0, runner_tb);       // Сохраняем переменные для анализа
+        #500 $finish;                  // Завершаем симуляцию через 500 ns
     end
-
+    // Конец
 endmodule
