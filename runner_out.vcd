@@ -1,5 +1,5 @@
 $date
-	Wed Nov 20 11:48:06 2024
+	Thu Nov 21 09:27:19 2024
 $end
 $version
 	Icarus Verilog
@@ -8,38 +8,39 @@ $timescale
 	1ps
 $end
 $scope module runner_tb $end
-$var wire 1 ! miso $end
+$var wire 1 ! sclk $end
 $var wire 1 " mosi $end
-$var wire 1 # sclk $end
-$var reg 1 $ cs $end
-$var reg 1 % mosi_driver $end
+$var wire 6 # led [5:0] $end
+$var wire 1 $ cs $end
+$var reg 1 % miso $end
 $var reg 1 & rstn $end
 $var reg 1 ' sys_clk $end
 $var reg 1 ( t_start $end
 $var reg 1 ) up $end
-$var integer 32 * i [31:0] $end
-$var integer 32 + j [31:0] $end
 $scope module master $end
-$var wire 1 ! miso $end
-$var wire 1 " mosi $end
+$var wire 1 % miso $end
 $var wire 1 & rstn $end
 $var wire 1 ' sys_clk $end
-$var wire 1 ( t_star $end
+$var wire 1 ( t_start $end
 $var wire 1 ) up $end
-$var wire 1 # sclk $end
-$var wire 6 , led [5:0] $end
-$var parameter 32 - counter_width $end
-$var parameter 32 . idle $end
-$var parameter 32 / load $end
-$var parameter 32 0 reg_width $end
-$var parameter 32 1 reset $end
-$var parameter 32 2 transact1 $end
-$var parameter 32 3 transact2 $end
-$var reg 4 4 count [3:0] $end
-$var reg 3 5 led_counter [2:0] $end
+$var wire 1 ! sclk $end
+$var wire 1 " mosi $end
+$var wire 6 * led [5:0] $end
+$var wire 1 $ cs $end
+$var parameter 32 + counter_width $end
+$var parameter 32 , idle $end
+$var parameter 32 - load $end
+$var parameter 32 . reg_width $end
+$var parameter 32 / reset $end
+$var parameter 32 0 transact1 $end
+$var parameter 32 1 transact2 $end
+$var parameter 32 2 unload $end
+$var reg 4 3 count [3:0] $end
+$var reg 3 4 led_counter [2:0] $end
+$var reg 8 5 miso_d [7:0] $end
 $var reg 8 6 mosi_d [7:0] $end
 $var reg 4 7 state [3:0] $end
-$var reg 1 8 tmpcs $end
+$var integer 32 8 tmpcs [31:0] $end
 $scope begin genblk1[0] $end
 $var parameter 2 9 i $end
 $upscope $end
@@ -59,665 +60,162 @@ $scope begin genblk1[5] $end
 $var parameter 4 > i $end
 $upscope $end
 $upscope $end
-$scope module slave $end
-$var wire 1 $ cs $end
-$var wire 1 " mosi $end
-$var wire 1 & rstn $end
-$var wire 1 # sclk $end
-$var wire 1 ' sys_clk $end
-$var wire 6 ? led [5:0] $end
-$var parameter 32 @ counter_width $end
-$var parameter 32 A idle $end
-$var parameter 32 B load $end
-$var parameter 32 C reg_width $end
-$var parameter 32 D reset $end
-$var parameter 32 E transact1 $end
-$var reg 4 F count [3:0] $end
-$var reg 8 G mosi_d [7:0] $end
-$var reg 4 H state [3:0] $end
-$scope begin genblk1[0] $end
-$var parameter 2 I i $end
-$upscope $end
-$scope begin genblk1[1] $end
-$var parameter 2 J i $end
-$upscope $end
-$scope begin genblk1[2] $end
-$var parameter 3 K i $end
-$upscope $end
-$scope begin genblk1[3] $end
-$var parameter 3 L i $end
-$upscope $end
-$scope begin genblk1[4] $end
-$var parameter 4 M i $end
-$upscope $end
-$scope begin genblk1[5] $end
-$var parameter 4 N i $end
-$upscope $end
-$upscope $end
 $upscope $end
 $enddefinitions $end
 $comment Show the parameter values. $end
 $dumpall
-b101 N
-b100 M
-b11 L
-b10 K
-b1 J
-b0 I
-b11 E
-b0 D
-b1000 C
-b10 B
-b1 A
-b11 @
 b101 >
 b100 =
 b11 <
 b10 ;
 b1 :
 b0 9
-b100 3
-b11 2
-b0 1
-b1000 0
-b10 /
-b1 .
-b11 -
+b101 2
+b100 1
+b11 0
+b0 /
+b1000 .
+b10 -
+b1 ,
+b11 +
 $end
 #0
 $dumpvars
-b0 H
-b0 G
-bx F
-b111111 ?
-18
+b1 8
 b0 7
 b0 6
 b0 5
 b0 4
-b0 ,
-bx +
-bx *
+b0 3
+b0 *
 1)
 1(
 0'
 0&
 0%
 1$
-0#
-0"
-z!
+b0 #
+z"
+0!
 $end
 #5000
 1'
 #10000
-b0 ?
-b111110 ,
+b111110 #
+b111110 *
 0'
 1&
 #15000
-b1 H
+b1 7
 1'
 #20000
 0'
+0)
 #25000
+b111101 #
+b111101 *
+b1 4
 1'
 #30000
 0'
-0)
-b0 *
-0$
+0(
+1)
 #35000
-b111101 ,
-b1 5
+0"
+0$
+b0 8
+b1000 3
+b111101 6
+b10 7
 1'
 #40000
 0'
-1"
-1%
-b0 +
-1)
+1(
 #45000
+b111 3
+b1111010 6
+1!
+b11 7
 1'
 #50000
+0!
 0'
-0"
-0%
-b1 +
 #55000
+1"
+b110 3
+b11110100 6
+b100 7
+1!
 1'
 #60000
+0!
 0'
-1"
-1%
-b10 +
 #65000
+b101 3
+b11101000 6
+b11 7
+1!
 1'
 #70000
+0!
 0'
-b11 +
 #75000
+b100 3
+b11010000 6
+b100 7
+1!
 1'
 #80000
+0!
 0'
-b100 +
 #85000
+b11 3
+b10100000 6
+b11 7
+1!
 1'
 #90000
+0!
 0'
-b101 +
 #95000
+0"
+b10 3
+b1000000 6
+b100 7
+1!
 1'
 #100000
+0!
 0'
-0"
-0%
-b110 +
 #105000
+1"
+b1 3
+b10000000 6
+b11 7
+1!
 1'
 #110000
+0!
 0'
-b111 +
 #115000
+0"
+b0 3
+b0 6
+b100 7
+1!
 1'
 #120000
+0!
 0'
-b1000 +
 #125000
+z"
+1$
+b1 8
+b101 7
+0!
 1'
 #130000
 0'
 #135000
+b1 7
 1'
-#140000
-0'
-0)
-b1 *
-#145000
-b111011 ,
-b10 5
-1'
-#150000
-0'
-b0 +
-1)
-#155000
-1'
-#160000
-0'
-1"
-1%
-b1 +
-#165000
-1'
-#170000
-0'
-0"
-0%
-b10 +
-#175000
-1'
-#180000
-0'
-1"
-1%
-b11 +
-#185000
-1'
-#190000
-0'
-b100 +
-#195000
-1'
-#200000
-0'
-b101 +
-#205000
-1'
-#210000
-0'
-b110 +
-#215000
-1'
-#220000
-0'
-0"
-0%
-b111 +
-#225000
-1'
-#230000
-0'
-b1000 +
-#235000
-1'
-#240000
-0'
-#245000
-1'
-#250000
-0'
-0)
-b10 *
-#255000
-b110111 ,
-b11 5
-1'
-#260000
-0'
-b0 +
-1)
-#265000
-1'
-#270000
-0'
-b1 +
-#275000
-1'
-#280000
-0'
-1"
-1%
-b10 +
-#285000
-1'
-#290000
-0'
-0"
-0%
-b11 +
-#295000
-1'
-#300000
-0'
-1"
-1%
-b100 +
-#305000
-1'
-#310000
-0'
-b101 +
-#315000
-1'
-#320000
-0'
-b110 +
-#325000
-1'
-#330000
-0'
-b111 +
-#335000
-1'
-#340000
-0'
-b1000 +
-#345000
-1'
-#350000
-0'
-#355000
-1'
-#360000
-0'
-0)
-b11 *
-#365000
-b101111 ,
-b100 5
-1'
-#370000
-0'
-0"
-0%
-b0 +
-1)
-#375000
-1'
-#380000
-0'
-b1 +
-#385000
-1'
-#390000
-0'
-b10 +
-#395000
-1'
-#400000
-0'
-1"
-1%
-b11 +
-#405000
-1'
-#410000
-0'
-0"
-0%
-b100 +
-#415000
-1'
-#420000
-0'
-1"
-1%
-b101 +
-#425000
-1'
-#430000
-0'
-b110 +
-#435000
-1'
-#440000
-0'
-b111 +
-#445000
-1'
-#450000
-0'
-b1000 +
-#455000
-1'
-#460000
-0'
-#465000
-1'
-#470000
-0'
-0)
-b100 *
-#475000
-b11111 ,
-b101 5
-1'
-#480000
-0'
-0"
-0%
-b0 +
-1)
-#485000
-1'
-#490000
-0'
-b1 +
-#495000
-1'
-#500000
-0'
-b10 +
-#505000
-1'
-#510000
-0'
-b11 +
-#515000
-1'
-#520000
-0'
-1"
-1%
-b100 +
-#525000
-1'
-#530000
-0'
-0"
-0%
-b101 +
-#535000
-1'
-#540000
-0'
-1"
-1%
-b110 +
-#545000
-1'
-#550000
-0'
-b111 +
-#555000
-1'
-#560000
-0'
-b1000 +
-#565000
-1'
-#570000
-0'
-#575000
-1'
-#580000
-0'
-0)
-b101 *
-#585000
-b111110 ,
-b0 5
-1'
-#590000
-0'
-0"
-0%
-b0 +
-1)
-#595000
-1'
-#600000
-0'
-b1 +
-#605000
-1'
-#610000
-0'
-b10 +
-#615000
-1'
-#620000
-0'
-b11 +
-#625000
-1'
-#630000
-0'
-b100 +
-#635000
-1'
-#640000
-0'
-1"
-1%
-b101 +
-#645000
-1'
-#650000
-0'
-0"
-0%
-b110 +
-#655000
-1'
-#660000
-0'
-1"
-1%
-b111 +
-#665000
-1'
-#670000
-0'
-b1000 +
-#675000
-1'
-#680000
-0'
-#685000
-1'
-#690000
-0'
-0)
-b110 *
-#695000
-b111101 ,
-b1 5
-1'
-#700000
-0'
-0"
-0%
-b0 +
-1)
-#705000
-1'
-#710000
-0'
-b1 +
-#715000
-1'
-#720000
-0'
-b10 +
-#725000
-1'
-#730000
-0'
-b11 +
-#735000
-1'
-#740000
-0'
-b100 +
-#745000
-1'
-#750000
-0'
-b101 +
-#755000
-1'
-#760000
-0'
-1"
-1%
-b110 +
-#765000
-1'
-#770000
-0'
-0"
-0%
-b111 +
-#775000
-1'
-#780000
-0'
-b1000 +
-#785000
-1'
-#790000
-0'
-#795000
-1'
-#800000
-0'
-0)
-b111 *
-#805000
-b111011 ,
-b10 5
-1'
-#810000
-0'
-b0 +
-1)
-#815000
-1'
-#820000
-0'
-b1 +
-#825000
-1'
-#830000
-0'
-b10 +
-#835000
-1'
-#840000
-0'
-b11 +
-#845000
-1'
-#850000
-0'
-b100 +
-#855000
-1'
-#860000
-0'
-b101 +
-#865000
-1'
-#870000
-0'
-b110 +
-#875000
-1'
-#880000
-0'
-1"
-1%
-b111 +
-#885000
-1'
-#890000
-0'
-b1000 +
-#895000
-1'
-#900000
-0'
-#905000
-1'
-#910000
-0'
-1$
-b1000 *
-#915000
-1'
-#920000
-0'
-#925000
-1'
-#930000
-0'
-#935000
-1'
-#940000
-0'
-#945000
-1'
-#950000
-0'
-#955000
-1'
-#960000
-0'
-#965000
-1'
-#970000
-0'
-#975000
-1'
-#980000
-0'
-#985000
-1'
-#990000
-0'
-#995000
-1'
-#1000000
-0'
