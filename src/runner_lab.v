@@ -1,21 +1,26 @@
 module runner_lab
 (
-    output [5:0] led,
-    input rstn,
-    input sys_clk,
-    input cs,
-    input mosi, 
-    input sclk
+    output [5:0] led,               // 6 светодиодов, управляемых состояниями бита mosi_d
+    input rstn,                     // cброс (активный низкий). Если rstn = 0, модуль переходит в начальное состояние
+    input sys_clk,                  // cистемный тактовый сигнал, используемый для синхронизации всех процессов
+    input cs,                       // cигнал выбора устройства. Если cs = 0, происходит активная передача данных
+    input mosi,                     // данные, передаваемые от мастера SPI
+    input sclk                      // тактовый сигнал, формируемый приёмником во время передачи данных
 );
 
-parameter reg_width = 8;
-parameter counter_width = $clog2(reg_width);
-parameter reset = 0, idle = 1, load = 2, transact1 = 3, transact2 = 4, unload = 5;
+parameter reg_width = 8;                                                   // ширина регистра для хранения данных, равна 8
+parameter counter_width = $clog2(reg_width);                               // ширина счётчика, автоматически вычисляется как логарифм от reg_width log_{2}8 = 3 
+parameter reset = 0;                                                       // cброс внутренних регистров                                           
+parameter idle = 1;                                                        // ожидание активного сигнала cs
+parameter load = 2;                                                        // подготовка регистра для приёма данных
+parameter transact1 = 3;                                                   // приём данных с линии mosi и их сдвиг в регистре mosi_d
+parameter transact2 = 4;                                                   // приём данных с линии mosi и их сдвиг в регистре mosi_d
+parameter unload = 5;                                                      // завершение передачи данных
 
-reg [reg_width-1:0] mosi_d;
-reg [counter_width:0] count;
-reg [3:0] state;
-reg [2:0] led_counter;
+reg [reg_width-1:0] mosi_d;                          // регистр шириной 8 бит, используется для хранения принятых данных
+reg [counter_width:0] count;                         // cчётчик битов, определяет количество оставшихся для приёма бит
+reg [3:0] state;                                     // текущее состояние FSM, управляет переходами между этапами
+reg [2:0] led_counter;                               // cчётчик для управления светодиодами   а надо?
 
 initial
     begin
@@ -83,7 +88,6 @@ always @(state)
   else 
     state = idle;
   end
-  // end state machine
 
 assign sclk = ( state == transact1 || state == transact2) ? sys_clk : 1'b0;
 

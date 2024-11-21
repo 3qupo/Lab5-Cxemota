@@ -5,28 +5,32 @@
 // vvp ./compiled 
 module runner
 (
-    output [5:0] led,
-    input rstn,
-    input sys_clk,
-    input t_start,
-    input up,
-    output cs,
-    input miso, 
-    output mosi,
-    output sclk
+    input miso,                         // линия данных от ведомого устройства (Slave) к мастеру (Master)
+    input rstn,                         // cигнал сброса (активный низкий)    rstn = 0 -> reset
+    input sys_clk,                      // главный системный тактовый сигнал
+    input t_start,                      // сигнал начала работы
+    input up,                           // сигнал управления счетчиком светодиодов
+    output [5:0] led,                   // светодиоды
+    output cs,                          // активный низкий сигнал, указывает на активность передачи
+    output mosi,                        // данные, отправляемые от мастера
+    output sclk                         // тактовый сигнал, активный во время передачи данных (transact1 и transact2)
 );
 
-parameter reg_width = 8;
-parameter counter_width = $clog2(reg_width);
-parameter reset = 0, idle = 1, load = 2, transact1 = 3, transact2 = 4, unload = 5;
+parameter reg_width = 8;                                // шина регистров (8 бит)
+parameter counter_width = $clog2(reg_width);            // определение минимального количества бит, необходимых для представления чисел в диапазоне от 0 до reg_width - 1
+parameter reset = 0;                                    // cброс всех сигналов и данных
+parameter idle = 1;                                     // ожидание команды запуска (t_start)
+parameter load = 2;                                     // подготовка данных для передачи, запись в mosi_d из led
+parameter transact1 = 3;                                // передача данных по SPI; чередование состояний для тактирования
+parameter transact2 = 4;                                // передача данных по SPI; чередование состояний для тактирования
+parameter unload = 5;                                   // завершение передачи, сброс
 
 integer tmpcs = 1;
-reg [reg_width-1:0] mosi_d;
-reg [reg_width-1:0] miso_d;
-reg [counter_width:0] count;
-reg [3:0] state;
-
-reg [2:0] led_counter;
+reg [reg_width-1:0] mosi_d;                // данные, которые будут отправляться через линию MOSI
+reg [reg_width-1:0] miso_d;                // данные, получаемые через линию MISO
+reg [counter_width:0] count;               // счетчик битов для передачи данных
+reg [3:0] state;                           // текущий статус состояния
+reg [2:0] led_counter;                     // счетчик, управляющий состоянием светодиодов
 
 initial
     begin
