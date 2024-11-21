@@ -9,7 +9,6 @@ module runner
     input sys_clk,
     input t_start,
     input up,
-
     output cs,
     input miso, 
     output mosi,
@@ -30,66 +29,66 @@ reg [2:0] led_counter;
 
 initial
     begin
-    led_counter <= 0;   
-    mosi_d <= 0;
-    miso_d <= 0;
-    state <= 0;
-end
+        led_counter <= 0;   
+        mosi_d <= 0;
+        miso_d <= 0;
+        state <= 0;
+    end
 
 always @(state)
     begin
-    case (state)
-      reset:
-      begin
-        miso_d <= 0;
-        mosi_d <= 0;
-        count <= 0;
-        tmpcs <= 1;
-      end
-      idle:
-      begin
-        miso_d <= 0;
-        mosi_d <= 0;
-        count <= 0;
-        tmpcs <= 1;
-      end
-      load:
-      begin
-        miso_d <= 0;
-        mosi_d <= led;
-        count <= reg_width;
-        tmpcs <= 0;
-      end
-      transact1:
-      begin
-        tmpcs <= 0;
-        miso_d <= {miso_d[reg_width-2:0], miso};
-        mosi_d <= {mosi_d[reg_width-2:0], 1'b0};
-        count <= count-1;
-      end
-      transact2:
-      begin
-        tmpcs <= 0;
-        miso_d <= {miso_d[reg_width-2:0], miso};
-        mosi_d <= {mosi_d[reg_width-2:0], 1'b0};
-        count <= count-1;
-      end
-      unload:
-      begin
-        miso_d <= 0;
-        mosi_d <= 0;
-        count <= 0;
-        tmpcs <= 1;
-      end
-      default:
-      begin
-        miso_d <= 0;
-        mosi_d <= 0;
-        count <= 0;
-        tmpcs <= 1;
-      end
-    endcase
-  end
+        case (state)
+          reset:
+              begin
+                miso_d <= 0;
+                mosi_d <= 0;
+                count <= 0;
+                tmpcs <= 1;
+              end
+          idle:
+              begin
+                miso_d <= 0;
+                mosi_d <= 0;
+                count <= 0;
+                tmpcs <= 1;
+              end
+          load:
+              begin
+                miso_d <= 0;
+                mosi_d <= led;
+                count <= reg_width;
+                tmpcs <= 0;
+              end
+          transact1:
+              begin
+                tmpcs <= 0;
+                miso_d <= {miso_d[reg_width-2:0], miso};
+                mosi_d <= {mosi_d[reg_width-2:0], 1'b0};
+                count <= count-1;
+              end
+          transact2:
+              begin
+                tmpcs <= 0;
+                miso_d <= {miso_d[reg_width-2:0], miso};
+                mosi_d <= {mosi_d[reg_width-2:0], 1'b0};
+                count <= count-1;
+              end
+          unload:
+              begin
+                miso_d <= 0;
+                mosi_d <= 0;
+                count <= 0;
+                tmpcs <= 1;
+              end
+          default:
+              begin
+                miso_d <= 0;
+                mosi_d <= 0;
+                count <= 0;
+                tmpcs <= 1;
+              end
+       endcase
+   end
 
 
   always @(posedge sys_clk)
@@ -128,9 +127,7 @@ always @(state)
             state = idle;
       endcase
   end
-  // end state machine
 
-  // begin SPI logic
   assign cs = tmpcs;
   assign mosi = ( ~cs ) ? mosi_d[reg_width-1] : 1'bz;
   assign sclk = ( state == transact1 || state == transact2) ? sys_clk : 1'b0;
@@ -139,21 +136,21 @@ always @(state)
 
 always @(posedge sys_clk)
 begin
-  if (!rstn)
-  begin
-    led_counter <= 0;
-  end
-  else
-  begin
+    if (!rstn)
+    begin
+        led_counter <= 0;
+    end
+    else
+    begin
         if (!up)
-        begin
-            led_counter <= led_counter + 1;
-            if (led_counter == 5)
-                begin
-                led_counter <= 0;
-                end
-        end
-  end
+            begin
+                led_counter <= led_counter + 1;
+                if (led_counter == 5)
+                    begin
+                        led_counter <= 0;
+                    end
+            end
+    end
 end
 
 genvar i;
