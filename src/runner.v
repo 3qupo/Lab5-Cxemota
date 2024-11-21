@@ -1,5 +1,6 @@
 // Отправитель
-// cd C:\iverilog\runner
+// cd C:\iverilog\runner                   АНДРЕЙ           
+// cd C:\iverilog\runner\Lab5-Cxemota      ЮЛЯ
 // iverilog -o ./compiled ./src/runner.v ./src/runner_tb.v ./src/runner_lab.v
 // vvp ./compiled 
 module runner

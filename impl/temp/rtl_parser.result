@@ -1,17 +1,17 @@
 [
  {
-  "InstFile" : "C:/iverilog/runner/src/runner.v",
-  "InstLine" : 5,
+  "InstFile" : "C:/iverilog/runner/Lab5-Cxemota/src/runner.v",
+  "InstLine" : 6,
   "InstName" : "runner",
-  "ModuleFile" : "C:/iverilog/runner/src/runner.v",
-  "ModuleLine" : 5,
+  "ModuleFile" : "C:/iverilog/runner/Lab5-Cxemota/src/runner.v",
+  "ModuleLine" : 6,
   "ModuleName" : "runner"
  },
  {
-  "InstFile" : "C:/iverilog/runner/src/runner_lab.v",
+  "InstFile" : "C:/iverilog/runner/Lab5-Cxemota/src/runner_lab.v",
   "InstLine" : 1,
   "InstName" : "runner_lab",
-  "ModuleFile" : "C:/iverilog/runner/src/runner_lab.v",
+  "ModuleFile" : "C:/iverilog/runner/Lab5-Cxemota/src/runner_lab.v",
   "ModuleLine" : 1,
   "ModuleName" : "runner_lab"
  }
