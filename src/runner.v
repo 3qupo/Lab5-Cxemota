@@ -95,7 +95,7 @@ always @(state)
        endcase
    end
 
-
+  // На положительный сигнал sys_clk
   always @(posedge sys_clk)
   begin
     if (!rstn)
